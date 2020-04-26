@@ -24,6 +24,10 @@ class CreateTransactionService {
     const categoryRepository = getRepository(Category);
     const { total } = await transactionsRepository.getBalance();
 
+    if (!['income', 'outcome'].includes(type)) {
+      throw new AppError('Type is wrong');
+    }
+
     if (type === 'outcome' && total < value) {
       throw new AppError('You do not have enough balance');
     }
